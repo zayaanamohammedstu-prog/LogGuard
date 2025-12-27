@@ -7,6 +7,7 @@ import sys
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
+import pandas as pd
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -88,7 +89,6 @@ def analyze_logs():
                 if parsed:
                     parsed_logs.append(parsed)
             
-            import pandas as pd
             df = pd.DataFrame(parsed_logs)
         
         else:
@@ -145,7 +145,6 @@ def analyze_single_line():
         if not parsed:
             return jsonify({'error': 'Could not parse log line'}), 400
         
-        import pandas as pd
         df = pd.DataFrame([parsed])
         X = parser.extract_features(df)
         

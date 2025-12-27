@@ -72,15 +72,27 @@ def analyze_logs():
             if file.filename == '':
                 return jsonify({'error': 'No file selected'}), 400
             
-            # Save temporarily and parse
-            temp_path = os.path.join(config.DATA_DIR, 'temp_upload.log')
-            os.makedirs(config.DATA_DIR, exist_ok=True)
-            file.save(temp_path)
-            df = parser.parse_log_file(temp_path)
-            os.remove(temp_path)
+            # Validate file extension
+            allowed_extensions = {'.log', '.txt'}
+            file_ext = os.path.splitext(file.filename)[1].lower()
+            if file_ext not in allowed_extensions:
+                return jsonify({'error': 'Invalid file type. Only .log and .txt files are allowed'}), 400
+            
+            # Save temporarily and parse using secure temp file
+            import tempfile
+            with tempfile.NamedTemporaryFile(mode='w+', suffix='.log', delete=False) as temp_file:
+                temp_path = temp_file.name
+                file.save(temp_path)
+            
+            try:
+                df = parser.parse_log_file(temp_path)
+            finally:
+                # Ensure temp file is deleted
+                if os.path.exists(temp_path):
+                    os.remove(temp_path)
         
         # Check if text was provided
-        elif 'logs' in request.json:
+        elif request.json and 'logs' in request.json:
             log_text = request.json['logs']
             # Parse line by line
             parsed_logs = []
@@ -134,6 +146,9 @@ def analyze_single_line():
         }), 400
     
     try:
+        if not request.json:
+            return jsonify({'error': 'Invalid JSON request'}), 400
+        
         data = request.json
         log_line = data.get('log_line', '')
         

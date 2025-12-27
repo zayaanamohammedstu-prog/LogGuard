@@ -35,11 +35,13 @@ async function checkStatus() {
 }
 
 // Switch between tabs
-function switchTab(tabName) {
+function switchTab(tabName, event) {
     // Update tab buttons
     const buttons = document.querySelectorAll('.tab-button');
     buttons.forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
     
     // Update tab content
     const tabs = document.querySelectorAll('.tab-content');

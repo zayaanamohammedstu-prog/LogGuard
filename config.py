@@ -30,7 +30,8 @@ LOG_PATTERNS = {
 # Server configuration
 FLASK_HOST = '0.0.0.0'
 FLASK_PORT = 5000
-DEBUG = True
+# Set DEBUG to False in production environment
+DEBUG = os.getenv('FLASK_DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # Feature extraction configuration
 FEATURES = [

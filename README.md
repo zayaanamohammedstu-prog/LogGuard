@@ -129,6 +129,17 @@ Edit `config.py` to customize:
 - Feature extraction settings
 - File paths
 
+### Environment Variables
+
+For production deployment, set these environment variables:
+
+```bash
+# Disable debug mode in production
+export FLASK_DEBUG=False
+```
+
+Debug mode is disabled by default. To enable it for development, set `FLASK_DEBUG=True`.
+
 ## 📁 Project Structure
 
 ```

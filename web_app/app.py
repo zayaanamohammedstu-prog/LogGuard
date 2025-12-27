@@ -4,6 +4,7 @@ Provides REST API and web interface for anomaly detection
 """
 import os
 import sys
+import tempfile
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
@@ -79,8 +80,7 @@ def analyze_logs():
                 return jsonify({'error': 'Invalid file type. Only .log and .txt files are allowed'}), 400
             
             # Save temporarily and parse using secure temp file
-            import tempfile
-            with tempfile.NamedTemporaryFile(mode='w+', suffix='.log', delete=False) as temp_file:
+            with tempfile.NamedTemporaryFile(mode='wb', suffix='.log', delete=False) as temp_file:
                 temp_path = temp_file.name
                 file.save(temp_path)
             

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogGuard - IT Audit System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>🛡️ LogGuard</h1>
+                <p class="subtitle">Intelligent IT Audit System for Anomaly Detection</p>
+            </div>
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Checking...</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Quick Analysis Section -->
+            <section class="card">
+                <h2>Quick Log Analysis</h2>
+                <div class="input-group">
+                    <label for="singleLog">Enter a single log line:</label>
+                    <textarea id="singleLog" rows="2" placeholder='Example: 2024-01-15 14:23:45 192.168.1.100 INFO "GET /api/users 200 45ms"'></textarea>
+                    <button onclick="analyzeSingleLine()" class="btn btn-primary">Analyze Line</button>
+                </div>
+                <div id="singleResult" class="result-box" style="display: none;"></div>
+            </section>
+
+            <!-- Batch Analysis Section -->
+            <section class="card">
+                <h2>Batch Log Analysis</h2>
+                <div class="tabs">
+                    <button class="tab-button active" onclick="switchTab('text', event)">Text Input</button>
+                    <button class="tab-button" onclick="switchTab('file', event)">File Upload</button>
+                </div>
+
+                <div id="textTab" class="tab-content active">
+                    <label for="batchLogs">Paste multiple log lines:</label>
+                    <textarea id="batchLogs" rows="10" placeholder="Paste your server logs here..."></textarea>
+                    <button onclick="analyzeBatchText()" class="btn btn-primary">Analyze Logs</button>
+                </div>
+
+                <div id="fileTab" class="tab-content">
+                    <label for="fileUpload">Upload log file:</label>
+                    <input type="file" id="fileUpload" accept=".log,.txt" onchange="handleFileSelect()">
+                    <button onclick="analyzeBatchFile()" class="btn btn-primary" id="analyzeFileBtn" disabled>Analyze File</button>
+                </div>
+
+                <div id="batchResult" class="result-box" style="display: none;"></div>
+            </section>
+
+            <!-- Results Dashboard -->
+            <section class="card" id="dashboard" style="display: none;">
+                <h2>Analysis Results</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Logs</div>
+                        <div class="stat-value" id="totalLogs">0</div>
+                    </div>
+                    <div class="stat-card alert">
+                        <div class="stat-label">Anomalies Detected</div>
+                        <div class="stat-value" id="anomalyCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Anomaly Rate</div>
+                        <div class="stat-value" id="anomalyRate">0%</div>
+                    </div>
+                </div>
+
+                <div class="severity-section">
+                    <h3>Anomalies by Severity</h3>
+                    <div id="severityChart" class="severity-chart"></div>
+                </div>
+
+                <div class="anomalies-section">
+                    <h3>Detected Anomalies</h3>
+                    <div id="anomaliesList" class="anomalies-list"></div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="card">
+                <h2>About LogGuard</h2>
+                <p>
+                    LogGuard is an intelligent IT audit system that combines Machine Learning and Web Development 
+                    to provide automated anomaly detection in server logs. It helps IT auditors proactively 
+                    identify suspicious activities, potential security threats, and operational issues.
+                </p>
+                <h3>Features:</h3>
+                <ul>
+                    <li>🤖 Machine Learning-based anomaly detection using Isolation Forest algorithm</li>
+                    <li>📊 Real-time log analysis and visualization</li>
+                    <li>🔍 Pattern recognition for security threats</li>
+                    <li>📈 Comprehensive reporting and statistics</li>
+                    <li>⚡ Fast processing of large log files</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 LogGuard - Intelligent IT Audit System</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
